@@ -1,0 +1,52 @@
+[package]
+name = "contract"
+description = "A TON blockchain project"
+version = "0.1.0"
+license = "MIT"
+
+[toolchain]
+acton = "1.1.0"
+
+[contracts.Order]
+display-name = "Order"
+src = "contracts/Order.tolk"
+depends = []
+
+[contracts.Marketplace]
+display-name = "Marketplace"
+src = "contracts/Marketplace.tolk"
+depends = ["Order"]
+
+# Test-only USDT stand-ins: the Tolk port of the Notcoin jetton from
+# ton-blockchain/tolk-bench. Its wallet uses the same storage layout as Tether's
+# stablecoin wallet (status:uint4 balance owner master), so the Marketplace /
+# Order wallet-address math is exercised exactly as on mainnet. Never deployed.
+[contracts.JettonWallet]
+display-name = "JettonWallet (test mock)"
+src = "tests/jetton/JettonWallet.tolk"
+depends = []
+
+[contracts.JettonMinter]
+display-name = "JettonMinter (test mock)"
+src = "tests/jetton/JettonMinter.tolk"
+depends = []
+
+[test]
+
+[fmt]
+width = 100
+ignore = []
+
+[scripts]
+deploy-emulation = "acton script scripts/deploy.tolk"
+deploy-testnet = "acton script scripts/deploy.tolk --net testnet"
+
+[import-mappings]
+acton = ".acton"
+contracts = "contracts"
+gen = "gen"
+tests = "tests"
+wrappers = "wrappers"
+
+# Check full Acton.toml reference and all available keys:
+# https://ton-blockchain.github.io/acton/docs/acton-toml
