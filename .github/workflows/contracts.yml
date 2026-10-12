@@ -1,0 +1,28 @@
+name: Contracts CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Acton
+        run: |
+          curl -LsSf https://github.com/ton-blockchain/acton/releases/latest/download/acton-installer.sh | sh
+          echo "$HOME/.acton/bin" >> "$GITHUB_PATH"
+
+      - name: Show Acton version
+        run: acton --version
+
+      - name: Build contracts
+        run: acton build
+
+      - name: Run tests
+        run: acton test
